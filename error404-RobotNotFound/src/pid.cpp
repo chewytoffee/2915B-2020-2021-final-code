@@ -25,13 +25,13 @@ float kIS = 0.0;
 float kDS = 0.0;
 
 //variables for x axis
-int integral, totalError, error, delta, target, sensors, power, lDriveSensors, rDriveSensors;
+int integral, totalError, error, delta, sensors, power, lDriveSensors, rDriveSensors;
 int maxIntegral = 300;
 int integralBound = 3;
 int prevError = 0;
 
 //variables for y axis
-int integralStrafe, totalStrafeError, strafeError, deltaStrafe, targetStrafe, strafeSensors, strafePower, lStrafeSensors, rStrafeSensors;
+int integralStrafe, totalStrafeError, strafeError, deltaStrafe, strafeSensors, strafePower, lStrafeSensors, rStrafeSensors;
 int maxStrafeIntegral = 300;
 int strafeIntegralBound = 3;
 int prevStrafeError = 0;
@@ -45,7 +45,7 @@ void resetSensors(){
 }
 
 
-void driveStraight(){
+void driveStraight(int target){
   while(enableDrive){
 
     lDriveSensors = ((backLeft.get_position() + frontLeft.get_position())/2);
@@ -80,20 +80,36 @@ void driveStraight(){
   }
 }
 
-void strafeStraight(){
+void strafeStraight(int target){
   while (enableStrafe){
 
     lStrafeSensors = ((frontLeft.get_position() - frontRight.get_position())/2);
     rStrafeSensors = ((backRight.get_position() - backLeft.get_position())/2);
     strafeSensors = ((lStrafeSensors + rStrafeSensors)/2);
 
-    strafeError = targetStrafe - strafeSensors;
+    strafeError = target - strafeSensors;
 
     if (abs(strafeError) < strafeIntegralBound){
       totalStrafeError += strafeError;
     } else {
       totalStrafeError = 0;
     }
+    totalStrafeError = abs(totalStrafeError) > maxStrafeIntegral ? signnum_c(totalStrafeError) *maxStrafeIntegral :totalStrafeError;
+
+    //derivitive
+    deltaStrafe = strafeError - prevStrafeError;
+    prevStrafeError = strafeError;
+
+    //gets the power
+    strafePower = strafeError*kPS + integralStrafe *kIS + deltaStrafe * kDS;
+
+    //sends the power to the motors
+    backLeft.move(strafePower*-1);
+    backRight.move(strafePower);
+    frontLeft.move(strafePower);
+    frontRight.move(strafePower*-1);
+
+    pros::delay(15);
 
 
 

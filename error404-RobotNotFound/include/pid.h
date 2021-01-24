@@ -1,6 +1,7 @@
 #include "main.h"
 
 extern bool enableDrive;
-extern int target;
+extern bool enableStrafe;
 void resetSensors();
-void driveStraight();
+void driveStraight(int target);
+void strafeStraight(int target);

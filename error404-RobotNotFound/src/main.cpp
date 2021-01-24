@@ -27,7 +27,7 @@ void competition_initialize() {}
 void autonomous() {
 	pros::Task xPID (driveStraight);
 	resetSensors();
-	target = 500;
+	driveStraight(500);
 }
 
 void opcontrol() {
