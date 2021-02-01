@@ -2,6 +2,20 @@
 #include "custom/globals.h"
 #include "custom/pid.h"
 #include "custom/auton-gui.h"
+bool isBallThere;
+int distance;
+bool toggle = false;
+
+
+void toggleIntake() {
+	toggle = !toggle;
+	if (toggle) {
+		master.set_text(0,0,"Intakes are on");
+	}
+	else if (!toggle){
+		master.set_text(0,0,"Intakes are off");
+	}
+}
 
 void initialize() {
 		autoSelection::autoGUI();
@@ -17,6 +31,17 @@ void autonomous() {
 }
 
 void opcontrol(){
+	while (true){
+		distance =  optical.get_proximity();
+		if (distance == 255){
+			isBallThere = true;
+		}
+		else {
+			isBallThere = false;
+		}
+
+
+
 		//creates integers for each of the controller axis to help with custom deadzones
 		int ch3,ch4,ch1;
 		ch3 = master.get_analog(ANALOG_LEFT_Y);
@@ -46,7 +71,8 @@ void opcontrol(){
 		//Find the largest joystick value
 		double max_XYstick_value = (double)(std::max(abs(ch3),abs(ch4)));
 
-		//The largest sum will be scaled down to the largest joystick value, and the others will be scaled by the same amount to preserve directionality
+		//The largest sum will be scaled down to the largest joystick value,
+		//and the others will be scaled by the same amount to preserve directionality
 		if (max_raw_sum != 0) {
 			fL = fL / max_raw_sum * max_XYstick_value;
 			bL = bL / max_raw_sum * max_XYstick_value;
@@ -81,4 +107,48 @@ void opcontrol(){
 		frontRight.move_voltage(fR);
 		backRight .move_voltage(bR);
 
+
+		//toggle intake
+		if (master.get_digital_new_press(DIGITAL_R1)){
+			toggleIntake();
+		}
+		if (master.get_digital(DIGITAL_DOWN)){
+			lowerRollers.move_voltage(-12000);
+			upperRollers.move_voltage(-12000);
+		}
+		else if (master.get_digital(DIGITAL_B)){
+			leftIntake.move_voltage(12000);
+			rightIntake.move_voltage(12000);
+		}
+		else if (master.get_digital(DIGITAL_L1)){
+			leftIntake.move_voltage(12000);
+			rightIntake.move_voltage(12000);
+			lowerRollers.move_voltage(12000);
+			upperRollers.move_voltage(12000);
+		}
+		else if (master.get_digital(DIGITAL_R2)){
+			leftIntake.move_voltage(-12000);
+			rightIntake.move_voltage(-12000);
+			lowerRollers.move_voltage(-12000);
+			upperRollers.move_voltage(-12000);
+		}
+		else if (toggle){
+			if (isBallThere){
+				leftIntake.move_voltage(12000);
+				rightIntake.move_voltage(12000);
+				lowerRollers.move_voltage(6000);
+			}
+			else{
+			leftIntake.move_voltage(12000);
+			rightIntake.move_voltage(12000);
+			lowerRollers.move_voltage(12000);
+			}
+		}
+		else{
+			leftIntake.move_voltage(0);
+			rightIntake.move_voltage(0);
+			lowerRollers.move_voltage(0);
+			upperRollers.move_voltage(0);
+		}
 	}
+}

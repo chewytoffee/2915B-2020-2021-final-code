@@ -4,6 +4,8 @@
 
 bool enableDrive = false;
 bool enableStrafe = false;
+bool enableTurn = false;
+
 
 
 //pasted from vexCode PID tutorial
@@ -24,6 +26,13 @@ float kPS = 0.0;
 float kIS = 0.0;
 float kDS = 0.0;
 
+//settings for z axis
+
+float kPT = 0.0;
+float kIT = 0.0;
+float kDT = 0.0;
+
+
 //variables for x axis
 int integral, totalError, error, delta, sensors, power, lDriveSensors, rDriveSensors;
 int maxIntegral = 300;
@@ -35,6 +44,12 @@ int integralStrafe, totalStrafeError, strafeError, deltaStrafe, strafeSensors, s
 int maxStrafeIntegral = 300;
 int strafeIntegralBound = 3;
 int prevStrafeError = 0;
+
+//variables for z axis
+int integralTurn, totalTurnError, turnError, deltaTurn, turnSensors, turnPower, lTurnSensors, rTurnSensors;
+int maxTurnIntegral = 300;
+int turnIntegralBound = 3;
+int prevTurnError = 0;
 
 //for resetting the sensors
 void resetSensors(){
@@ -68,7 +83,7 @@ void driveStraight(int target){
     prevError = error;
 
     //gets the power
-    power= error*kP + integral*kI + delta*kD;
+    power= error*kP + totalError*kI + delta*kD;
 
     //sends the power to the motors
     backLeft.move(power);
@@ -101,7 +116,7 @@ void strafeStraight(int target){
     prevStrafeError = strafeError;
 
     //gets the power
-    strafePower = strafeError*kPS + integralStrafe *kIS + deltaStrafe * kDS;
+    strafePower = strafeError*kPS + totalStrafeError *kIS + deltaStrafe * kDS;
 
     //sends the power to the motors
     backLeft.move(strafePower*-1);
@@ -113,5 +128,41 @@ void strafeStraight(int target){
 
 
 
+  }
+}
+
+
+void turnPoint(int target){
+  while(enableTurn){
+
+    lTurnSensors = ((backLeft.get_position() + frontLeft.get_position())/2);
+    rTurnSensors = ((backRight.get_position() + frontRight.get_position())/2);
+    turnSensors = ((lTurnSensors - rTurnSensors)/2);
+
+    turnError = target - turnSensors;
+
+    if(abs(turnError) < turnIntegralBound){
+    totalTurnError += turnError;
+    }  else {
+    totalTurnError = 0;
+    }
+
+    //caps integral (apparetly i have no idea how this works)
+    totalTurnError = abs(totalTurnError) > maxTurnIntegral ? signnum_c(totalTurnError) * maxTurnIntegral : totalTurnError;
+
+    //derivitive
+    deltaTurn = turnError - prevTurnError;
+    prevTurnError = turnError;
+
+    //gets the power
+    turnPower= turnError*kPT + totalTurnError*kIT + deltaTurn*kDT;
+
+    //sends the power to the motors
+    backLeft.move(power);
+    backRight.move(-power);
+    frontLeft.move(power);
+    frontRight.move(-power);
+
+    pros::delay(15);
   }
 }
