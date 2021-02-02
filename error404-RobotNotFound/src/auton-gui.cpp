@@ -1,6 +1,8 @@
 #include "main.h"
 #include "custom\auton-gui.h"
 
+	bool buttons[4];
+
 	static lv_res_t EventHelper(lv_obj_t * btn)
 	{
 		// store button index as int
@@ -8,8 +10,8 @@
 			lv_btn_toggle(btn);
 
 			// update the state of the button in bool array
-			autoSelection::buttons[id-1] = lv_btn_get_state(btn);
-			printf("%d\n",autoSelection::buttons[id-1]);	// print that buttons state for debug purposes
+			buttons[id-1] = lv_btn_get_state(btn);
+			printf("%d\n",buttons[id-1]);	// print that buttons state for debug purposes
 	    return LV_RES_OK; // return that button wasn't deleted (because lvgl 5.3)
 	}
 
