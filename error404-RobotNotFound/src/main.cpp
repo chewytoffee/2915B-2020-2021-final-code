@@ -2,7 +2,9 @@
 #include "custom/globals.h"
 #include "custom/pid.h"
 #include "custom/auton-gui.h"
+#include "custom/auton-runs.h"
 bool toggle = false;
+int chosenAuton = 0;
 
 
 void toggleIntake() {
@@ -17,6 +19,18 @@ void toggleIntake() {
 
 void initialize() {
 		autoSelection::autoGUI();
+		if (autoSelection::buttons[0] == true){
+			chosenAuton += 1;
+		}
+		if (autoSelection::buttons[1]){
+			chosenAuton += 2;
+		}
+		if (autoSelection::buttons[2]){
+			chosenAuton += 4;
+		}
+		if (autoSelection::buttons[3]){
+			chosenAuton += 8;
+		}
 }
 
 void disabled() {
