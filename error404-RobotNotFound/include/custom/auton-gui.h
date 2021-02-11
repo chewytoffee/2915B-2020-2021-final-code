@@ -1,6 +1,5 @@
 #include "main.h"
-
+extern bool buttons[4];
 namespace autoSelection {
- 	extern bool buttons[4];
 	void autoGUI(void);
 }

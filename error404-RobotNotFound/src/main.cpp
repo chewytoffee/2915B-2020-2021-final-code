@@ -19,16 +19,16 @@ void toggleIntake() {
 
 void initialize() {
 		autoSelection::autoGUI();
-		if (autoSelection::buttons[0] == true){
+		if (buttons[0] == true){
 			chosenAuton += 1;
 		}
-		if (autoSelection::buttons[1]){
+		if (buttons[1]){
 			chosenAuton += 2;
 		}
-		if (autoSelection::buttons[2]){
+		if (buttons[2]){
 			chosenAuton += 4;
 		}
-		if (autoSelection::buttons[3]){
+		if (buttons[3]){
 			chosenAuton += 8;
 		}
 }
@@ -63,10 +63,10 @@ void opcontrol(){
 		}
 
 		//natively add the X and Y axis
-		double fL = (double) ch3 - ch4;
-		double bL = (double) ch3 + ch4;
-		double fR = (double) ch3 + ch4;
-		double bR = (double) ch3 - ch4;
+		double fL = (double) ch3 +ch4;
+		double bL = (double) ch3 - ch4;
+		double fR = (double) ch3 - ch4;
+		double bR = (double) ch3 + ch4;
 
 		//Find the largest possible sum of X and Y
 		double max_raw_sum = (double)(abs(ch3) + abs(ch4));
