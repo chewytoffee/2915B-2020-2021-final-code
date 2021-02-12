@@ -84,10 +84,10 @@ void opcontrol(){
 		}
 
 		// rotation
-		fL = fL + ch1;
-		bL = bL + ch1;
-		fR = fR - ch1;
-		bR = bR - ch1;
+		fL = fL - ch1;
+		bL = bL - ch1;
+		fR = fR + ch1;
+		bR = bR + ch1;
 
 		//check if the max value is 127 or if 127 is larger
 		max_raw_sum = std::max(std::abs(fL),std::max(std::abs(bL),std::max(std::abs(fR),std::max(std::abs(bR),127.0))));
