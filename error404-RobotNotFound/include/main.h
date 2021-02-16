@@ -40,7 +40,6 @@
 /**
  * You should add more #includes here
  */
-// #include "okapi/api.hpp"
 //#include "pros/api_legacy.h"
 
 /**
@@ -78,6 +77,7 @@ void opcontrol(void);
  */
 #include <iostream>
 #include <cmath>
+#include <math.h>
 #endif
 
 #endif  // _PROS_MAIN_H_

@@ -332,10 +332,10 @@ constexpr RQuantity<M, L, T, A> round(const RQuantity<M, L, T, A> &lhs,
 // Common trig functions:
 // ------------------------------
 
-constexpr Number
-sin(const RQuantity<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>> &rhs) {
-  return Number(std::sin(rhs.getValue()));
-}
+// constexpr Number
+// sin(const RQuantity<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>> &rhs) {
+//   return Number(std::sin(rhs.getValue()));
+// }
 
 constexpr Number
 cos(const RQuantity<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>> &rhs) {
