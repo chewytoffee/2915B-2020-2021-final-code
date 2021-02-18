@@ -17,6 +17,7 @@ void toggleIntake() {
 	}
 }
 
+
 void initialize() {
 		autoSelection::autoGUI();
 		if (buttons[0] == true){
