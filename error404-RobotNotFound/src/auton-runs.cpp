@@ -50,8 +50,8 @@ bool intakeForTime(int runTime, int voltage,int entryTime){
         leftIntake.move_voltage(voltage);
         rightIntake.move_voltage(voltage);
     }
-    leftIntake.move(0);
-    rightIntake.move(0);
+    leftIntake.move_voltage(0);
+    rightIntake.move_voltage(0);
     return true;
 }
 
@@ -60,6 +60,9 @@ bool launchForTime(int runTime, int voltage, int entryTime){
         lowerRollers.move_voltage(voltage);
         upperRollers.move_voltage(voltage);
     }
+    lowerRollers.move_voltage(0);
+    upperRollers.move_voltage(0);
+    return true;
 }
 void auton1(){
     switch (switchVal){
