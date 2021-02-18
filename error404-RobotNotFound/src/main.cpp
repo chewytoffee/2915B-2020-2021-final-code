@@ -19,19 +19,23 @@ void toggleIntake() {
 
 
 void initialize() {
-		autoSelection::autoGUI();
-		if (buttons[0] == true){
-			chosenAuton += 1;
-		}
-		if (buttons[1]){
-			chosenAuton += 2;
-		}
-		if (buttons[2]){
-			chosenAuton += 4;
-		}
-		if (buttons[3]){
-			chosenAuton += 8;
-		}
+	backLeft.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    backRight.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    frontLeft.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    frontRight.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+	autoSelection::autoGUI();
+	if (buttons[0] == true){
+		chosenAuton += 1;
+	}
+	if (buttons[1]){
+		chosenAuton += 2;
+	}
+	if (buttons[2]){
+		chosenAuton += 4;
+	}
+	if (buttons[3]){
+		chosenAuton += 8;
+	}
 }
 
 void disabled() {
