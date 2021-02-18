@@ -46,42 +46,24 @@ void autonomous() {
 void opcontrol(){
 	while (true){
 		//creates integers for each of the controller axis to help with custom deadzones
-		int ch3,ch4,ch1;
+		int ch3,ch1;
 		ch3 = master.get_analog(ANALOG_LEFT_Y);
-		ch4 = master.get_analog(ANALOG_LEFT_X);
 		ch1 = master.get_analog(ANALOG_RIGHT_X);
 
 		//custom deadzones
 		if (ch3 < 5 && ch3 > -5){
 			ch3 = 0;
 		}
-		if (ch4 < 5 && ch4 > -5){
-			ch4 = 0;
-		}
+		
 		if (ch1 < 5 && ch1 > -5){
 			ch1 = 0;
 		}
 
 		//natively add the X and Y axis
-		double fL = (double) ch3 +ch4;
-		double bL = (double) ch3 - ch4;
-		double fR = (double) ch3 - ch4;
-		double bR = (double) ch3 + ch4;
-
-		//Find the largest possible sum of X and Y
-		double max_raw_sum = (double)(abs(ch3) + abs(ch4));
-
-		//Find the largest joystick value
-		double max_XYstick_value = (double)(std::max(abs(ch3),abs(ch4)));
-
-		//The largest sum will be scaled down to the largest joystick value,
-		//and the others will be scaled by the same amount to preserve directionality
-		if (max_raw_sum != 0) {
-			fL = fL / max_raw_sum * max_XYstick_value;
-			bL = bL / max_raw_sum * max_XYstick_value;
-			fR = fR / max_raw_sum * max_XYstick_value;
-			bR = bR / max_raw_sum * max_XYstick_value;
-		}
+		double fL = (double) ch3 ;
+		double bL = (double) ch3 ;
+		double fR = (double) ch3 ;
+		double bR = (double) ch3 ;
 
 		// rotation
 		fL = fL - ch1;
@@ -90,7 +72,7 @@ void opcontrol(){
 		bR = bR + ch1;
 
 		//check if the max value is 127 or if 127 is larger
-		max_raw_sum = std::max(std::abs(fL),std::max(std::abs(bL),std::max(std::abs(fR),std::max(std::abs(bR),127.0))));
+		double max_raw_sum = std::max(std::abs(fL),std::max(std::abs(bL),std::max(std::abs(fR),std::max(std::abs(bR),127.0))));
 
 		//scales everything to have 127 pct as max
 		fL = fL  / max_raw_sum * 127.0;
@@ -129,6 +111,12 @@ void opcontrol(){
 				lowerRollers.move_voltage(12000);
 				upperRollers.move_voltage(12000);
 				}
+			else if (master.get_digital(DIGITAL_RIGHT)){
+				leftIntake.move(-127);
+				rightIntake.move(-127);
+				lowerRollers.move_voltage(0);
+				upperRollers.move_voltage(0);
+			}
 			else if (master.get_digital(DIGITAL_B)){
 				leftIntake.move(127);
 				rightIntake.move(127);
@@ -155,6 +143,12 @@ void opcontrol(){
 				lowerRollers.move_voltage(12000);
 				upperRollers.move_voltage(12000);
 				}
+			else if (master.get_digital(DIGITAL_RIGHT)){
+				leftIntake.move(-127);
+				rightIntake.move(-127);
+				lowerRollers.move_voltage(0);
+				upperRollers.move_voltage(0);
+			}
 			else if (master.get_digital(DIGITAL_B)){
 				lowerRollers.move_voltage(12000);
 				upperRollers.move_voltage(12000);
