@@ -45,6 +45,22 @@ bool turnRight(int target, int voltage){
     return true;
 }
 
+bool intakeForTime(int runTime, int voltage,int entryTime){
+    while( (pros::millis() - entryTime) < runTime){
+        leftIntake.move_voltage(voltage);
+        rightIntake.move_voltage(voltage);
+    }
+    leftIntake.move(0);
+    rightIntake.move(0);
+    return true;
+}
+
+bool launchForTime(int runTime, int voltage, int entryTime){
+    while( (pros::millis() - entryTime) <runTime){
+        lowerRollers.move_voltage(voltage);
+        upperRollers.move_voltage(voltage);
+    }
+}
 void auton1(){
     switch (switchVal){
         case 0 :
