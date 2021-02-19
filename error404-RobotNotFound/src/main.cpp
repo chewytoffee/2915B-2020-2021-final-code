@@ -10,9 +10,11 @@ int chosenAuton = 0;
 void toggleIntake() {
 	toggle = !toggle;
 	if (toggle) {
+		master.clear_line(0);
 		master.set_text(0,0,"Intakes are on");
 	}
 	else if (!toggle){
+		master.clear_line(1);
 		master.set_text(0,0,"Intakes are off");
 	}
 }
@@ -50,6 +52,12 @@ void autonomous() {
 
 void opcontrol(){
 	while (true){
+		  if(pros::c::battery_get_capacity() < 35) {
+			master.clear_line(0);
+			master.print(0, 0, "Battery LOW (%dpct)", pros::c::battery_get_capacity());
+			master.rumble("-------");
+			pros::delay(5000);
+			}
 		//creates integers for each of the controller axis to help with custom deadzones
 		int ch3,ch1;
 		ch3 = master.get_analog(ANALOG_LEFT_Y);
