@@ -1,5 +1,6 @@
 #include "main.h"
 
+#define GLOBAL_DELAY 10 // 10ms
 extern pros::Motor backLeft;
 extern pros::Motor frontLeft;
 extern pros::Motor backRight;

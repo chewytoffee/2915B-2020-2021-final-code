@@ -1,5 +1,12 @@
+#pragma once
+// selector.h
+// 2915X
+// 2020-2021 VRC Change Up
+
 #include "main.h"
-extern bool buttons[4];
+
+extern int count;
+
 namespace autoSelection {
-	void autoGUI(void);
+    void autoGUI(void);
 }

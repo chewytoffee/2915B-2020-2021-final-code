@@ -65,12 +65,34 @@ bool launchForTime(int runTime, int voltage, int entryTime){
     return true;
 }
 
+// tune respective kP, kD, maxVolts and settle time
+myPID translateP(1.25, 0.0, 7000, 900);
+myPID angleP(4.5, 0.0, 0.0, 0.0);
+myPID rotationP(1.35, 0.0, 10000, 250);
 
-void auton1(){
-    switch (switchVal){
-        case 0 :
-            if (driveFwd(1200,600)){
-                switchVal = 1;
-            }
-    }
+// left 1 ball
+void left1B() {
+    /* START AUTON SEQUENCE */
+    /* END AUTON SEQUENCE */
+}
+
+// left 2 ball
+void left2B() {
+
+}
+
+// right 1 ball
+void right1B() {
+    /* START AUTON SEQUENCE */
+    /* END AUTON SEQUENCE */
+}
+
+// right 2 ball
+void right2B() {
+
+}
+
+// no auton run (sets voltage to 0)
+void noAuto() {
+    translateP.setDriveVoltage(0, 0);
 }

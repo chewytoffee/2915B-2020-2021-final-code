@@ -3,6 +3,7 @@
 #include "custom/pid.h"
 #include "custom/auton-gui.h"
 #include "custom/auton-runs.h"
+#include "pros/motors.h"
 bool toggle = false;
 int chosenAuton = 0;
 
@@ -10,11 +11,9 @@ int chosenAuton = 0;
 void toggleIntake() {
 	toggle = !toggle;
 	if (toggle) {
-		master.clear_line(0);
-		master.set_text(0,0,"Intakes are on");
+		master.set_text(0,0,"Intakes are on ");
 	}
 	else if (!toggle){
-		master.clear_line(1);
 		master.set_text(0,0,"Intakes are off");
 	}
 }
@@ -26,19 +25,8 @@ void initialize() {
     frontLeft.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     frontRight.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 	autoSelection::autoGUI();
-	if (buttons[0] == true){
-		chosenAuton += 1;
-	}
-	if (buttons[1]){
-		chosenAuton += 2;
-	}
-	if (buttons[2]){
-		chosenAuton += 4;
-	}
-	if (buttons[3]){
-		chosenAuton += 8;
-	}
 }
+
 
 void disabled() {
 }
@@ -47,17 +35,51 @@ void competition_initialize() {}
 
 
 void autonomous() {
-
+	switch(count) {
+		case 1:
+		printf("Auton NONE selected\n");
+		noAuto();
+		break;
+		;
+		case 2:
+		printf("Auton LEFT 1 selected\n");
+		left1B(); // call left 1 ball function
+		break;
+		;
+		case 3:
+		printf("Auton RIGHT 1 selected\n");
+		right1B();  // call right 1 ball function
+		break;
+		;
+		case 4:
+		printf("Auton LEFT 2 selected\n");
+		left2B(); // cal left 2 ball function
+		break;
+		;
+		case 5:
+		printf("Auton RIGHT 2 selected\n");
+		right2B(); // call right 2 ball function
+		break;
+		;
+		default:
+		printf("Nothing Selected\n");
+		noAuto();
+		;
+	}
 }
 
 void opcontrol(){
+	backLeft.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    backRight.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    frontLeft.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    frontRight.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	while (true){
-		  if(pros::c::battery_get_capacity() < 35) {
-			master.clear_line(0);
-			master.print(0, 0, "Battery LOW (%dpct)", pros::c::battery_get_capacity());
-			master.rumble("-------");
-			pros::delay(5000);
-			}
+		//   if(pros::c::battery_get_capacity() < 35) {
+		// 	master.clear_line(0);
+		// 	master.print(0, 0, "Battery LOW (%dpct)", pros::c::battery_get_capacity());
+		// 	master.rumble("-------");
+		// 	pros::delay(5000);
+		// 	}
 		//creates integers for each of the controller axis to help with custom deadzones
 		int ch3,ch1;
 		ch3 = master.get_analog(ANALOG_LEFT_Y);
@@ -79,10 +101,10 @@ void opcontrol(){
 		double bR = (double) ch3 ;
 
 		// rotation
-		fL = fL - ch1;
-		bL = bL - ch1;
-		fR = fR + ch1;
-		bR = bR + ch1;
+		fL = fL + ch1;
+		bL = bL + ch1;
+		fR = fR - ch1;
+		bR = bR - ch1;
 
 		//check if the max value is 127 or if 127 is larger
 		double max_raw_sum = std::max(std::abs(fL),std::max(std::abs(bL),std::max(std::abs(fR),std::max(std::abs(bR),127.0))));
