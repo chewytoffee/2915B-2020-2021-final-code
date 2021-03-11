@@ -61,6 +61,6 @@ class myPID {
         void translateChassis(double target_mm);
         
         // same function above (with overload for gyro object)
-        void translateChassis(double target_mm, myPID gyroObj, int timeout_ms);
+        void translateChassis(double target_mm, int timeout_ms);
 
 };

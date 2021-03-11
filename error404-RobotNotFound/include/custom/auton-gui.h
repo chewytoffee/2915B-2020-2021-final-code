@@ -1,3 +1,4 @@
+
 #pragma once
 // selector.h
 // 2915X
@@ -6,6 +7,8 @@
 #include "main.h"
 
 extern int count;
+
+extern void displayImage();
 
 namespace autoSelection {
     void autoGUI(void);

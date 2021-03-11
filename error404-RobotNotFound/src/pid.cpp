@@ -8,7 +8,7 @@
 
 
 // tick multiplier (converts distance to tick values)
-const double tickConst = 90 / (82.55 * M_PI);
+const double tickConst = 1800 / (82.55 * M_PI);
 
 // type safe sgn (sign) function
 // credit to https://stackoverflow.com/a/4609795
@@ -75,7 +75,7 @@ void myPID::setDriveVoltage(double left_pct, double right_pct) {
 
 // chassis translation (fwd, backwards)
 // takes the an instance of PIDClass for IMU calculation (gyroObj)
-void myPID::translateChassis(double target_mm, myPID gyroObj, int timeout_ms) {
+void myPID::translateChassis(double target_mm, int timeout_ms) {
 
   uint32_t currentTime;
   
